@@ -1,5 +1,10 @@
 ---
 - hosts: server
   become: yes
+  vars:
+    postgresql_users:
+      - name: docker
+        password: docker
+        priv: ALL
   roles:
     - geerlingguy.postgresql
