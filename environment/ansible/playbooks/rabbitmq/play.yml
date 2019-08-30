@@ -1,0 +1,9 @@
+---
+- hosts: server
+  become: yes
+  vars:
+    erlang_series: 20
+    rabbitmq_version: "3.7.17"
+  roles:
+    - rockandska.erlang
+    - geerlingguy.rabbitmq

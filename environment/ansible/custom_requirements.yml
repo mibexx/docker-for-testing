@@ -1,0 +1,6 @@
+- src: geerlingguy.redis
+- src: geerlingguy.elasticsearch
+- src: rockandska.erlang
+- src: geerlingguy.rabbitmq
+- src: geerlingguy.postgresql
+- src: geerlingguy.nginx

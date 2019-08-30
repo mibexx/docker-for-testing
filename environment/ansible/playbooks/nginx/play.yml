@@ -1,0 +1,7 @@
+---
+- hosts: server
+  become: yes
+  vars:
+    nginx_vhosts: []
+  roles:
+    - geerlingguy.nginx

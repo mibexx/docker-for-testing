@@ -1,0 +1,8 @@
+---
+- hosts: server
+  become: yes
+  vars:
+    elasticsearch_version: '5.x'
+    elasticsearch_network_host: 0.0.0.0
+  roles:
+    - geerlingguy.elasticsearch

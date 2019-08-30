@@ -1,0 +1,8 @@
+---
+- hosts: server
+  become: yes
+  tasks:
+    - name: Install RabbitMQ Management plugin
+      rabbitmq_plugin:
+        name: rabbitmq_management
+        state: enabled

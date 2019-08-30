@@ -1,0 +1,20 @@
+---
+- name: Redis
+  import_playbook: redis/play.yml
+
+- name: Java
+  import_playbook: java/play.yml
+
+- name: Elasticsearch
+  import_playbook: elasticsearch/play.yml
+
+- name: RabbitMQ
+  import_playbook: rabbitmq/play.yml
+- name: RabbitMQ Plugins
+  import_playbook: rabbitmq/plugins.yml
+
+- name: Postgres
+  import_playbook: postgres/play.yml
+
+- name: Nginx
+  import_playbook: nginx/play.yml
