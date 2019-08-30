@@ -16,8 +16,8 @@ ENV RABBITMQ_SERVER "127.0.0.1"
 ENV POSTGRESQL_SERVER "127.0.0.1"
 ENV RABBITMQ_ADMIN_USER "guest"
 ENV RABBITMQ_ADMIN_PW "guest"
-ENV POSTGRESQL_USER "postgres"
-ENV POSTGRESQL_PW "postgre"
+ENV POSTGRESQL_USER "docker"
+ENV POSTGRESQL_PW "docker"
 ENV YVES_DOMAIN "www.de.suite.local"
 ENV ZED_DOMAIN "zed.de.suite.local"
 ENV GLUE_DOMAIN "glue.de.suite.local"
@@ -40,8 +40,6 @@ ONBUILD RUN /etc/init.d/nginx start
 ONBUILD RUN /etc/init.d/php7.3-fpm start
 ONBUILD ADD . $SPRYKER_DIR
 ONBUILD RUN composer install --prefer-dist
-ONBUILD RUN vendor/bin/install -x jenkins-up -x jenkins-down
-ONBUILD RUN chown -Rf www-data:www-data $SPRYKER_DIR/data
-ONBUILD RUN ln -s $SPRYKER_DIR/public/Yves /srv/yves/www \
-ONBUILD RUN ln -s $SPRYKER_DIR/public/Zed /srv/yves/www \
+ONBUILD RUN ln -s $SPRYKER_DIR/public/Yves /srv/yves/www
+ONBUILD RUN ln -s $SPRYKER_DIR/public/Zed /srv/yves/www
 ONBUILD RUN ln -s $SPRYKER_DIR/public/Glue /srv/glue/www

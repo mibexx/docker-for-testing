@@ -14,8 +14,11 @@ MAINTAINER Mike Bertram <contact@mibexx.de>
 #ENV POSTGRESQL_SERVER "127.0.0.1"
 #ENV RABBITMQ_ADMIN_USER "guest"
 #ENV RABBITMQ_ADMIN_PW "guest"
-#ENV POSTGRESQL_USER "postgres"
-#ENV POSTGRESQL_PW "postgre"
+#ENV POSTGRESQL_USER "docker"
+#ENV POSTGRESQL_PW "docker"
 #ENV YVES_DOMAIN "www.de.suite.local"
 #ENV ZED_DOMAIN "zed.de.suite.local"
 #ENV GLUE_DOMAIN "glue.de.suite.local"
+
+RUN vendor/bin/install -x jenkins-up -x jenkins-down
+RUN chown -Rf www-data:www-data $SPRYKER_DIR/data
