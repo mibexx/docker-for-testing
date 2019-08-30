@@ -6,6 +6,7 @@ ENV ANSIBLE_DIR=$DOCKER_DIR"/ansible"
 ENV PLAYBOOK_DIR=$ANSIBLE_DIR"/playbooks"
 
 ENV NOTVISIBLE "in users profile"
+ENV ANSIBLE_CONFIG $ANSIBLE_DIR/ansible.cfg
 
 RUN apt-get update \
  && apt-get -y upgrade \

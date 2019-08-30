@@ -1,0 +1,59 @@
+---
+- name: Install PHP
+  include_role:
+    name: package
+  vars:
+    core_packages: []
+    apt_repositories:
+      - repo: ppa:ondrej/php
+    packages: "{{ php_packages }}"
+
+- name: php-fpm is running
+  shell: service php7.3-fpm start
+  tags:
+    - service
+
+- name: Install php extensions
+  include_role:
+    name: package
+  vars:
+    core_packages: []
+    packages: "{{ php_extensions }}"
+  notify: restart php
+
+- name: Install pecl packages
+  shell: "printf '\n' | pecl install {{ item }}"
+  register: pecl_result
+  changed_when: "pecl_result.rc == 0"
+  failed_when: "not (('already installed' in pecl_result.stdout) or ('install ok:' in pecl_result.stdout))"
+  with_items: "{{ pecl_packages }}"
+  notify: restart php
+
+- name: Define pecl extensions for cli
+  include_tasks: pecl-cli.yml
+
+- name: Define pecl extensions for fpm
+  include_tasks: pecl-fpm.yml
+
+- name: Allow environment variables in fpm
+  lineinfile:
+    path: /etc/php/7.3/fpm/pool.d/www.conf
+    regexp: ^clear_env = no
+    line: clear_env = no
+  when: allow_environment_variables
+  notify: restart php
+
+- name: PHP FPM env existing
+  file:
+    path: /etc/profile.d/php-fpm.sh
+    state: touch
+
+- name: Set environment variables in fpm
+  lineinfile:
+    path: /etc/init.d/php7.3-fpm
+    regexp: ^/lib/lsb/init-functions
+    insertafter: ". /lib/lsb/init-functions"
+    line: ". /etc/profile.d/php-fpm.sh"
+    state: present
+  when: allow_environment_variables
+  notify: restart php

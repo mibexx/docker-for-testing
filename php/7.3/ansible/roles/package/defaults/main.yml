@@ -1,0 +1,40 @@
+---
+
+core_packages:
+  - acl
+  - vim
+  - htop
+  - iputils-ping
+  - tcl
+
+# Additional packages
+# - git
+packages: []
+
+# Remove this packages
+# - vim
+remove_packages: []
+
+# Upgreade
+# dist, full, no, safe, yes
+upgrade_system: 'no'
+
+# APT Keys
+# - https://....
+apt_keys: []
+
+# APT Keys
+# - https://....
+remove_apt_keys: []
+
+# Add APT repositories
+# -
+#   repo: deb https://...
+#   filename: localfile (Default: ansible)
+apt_repositories: []
+
+# Remove APT repositories
+# -
+#   repo: deb https://...
+#   filename: localfile (Default: ansible)
+remove_apt_repositories: []

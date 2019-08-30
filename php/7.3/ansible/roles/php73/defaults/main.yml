@@ -1,0 +1,17 @@
+---
+php_packages:
+  - php7.3
+  - php7.3-fpm
+  - php7.3-dev
+
+php_extensions: []
+
+pecl_packages: []
+
+
+pecl_extensions_cli: []
+pecl_extensions_fpm: []
+remove_pecl_extensions_cli: []
+remove_pecl_extensions_fpm: []
+
+allow_environment_variables: false

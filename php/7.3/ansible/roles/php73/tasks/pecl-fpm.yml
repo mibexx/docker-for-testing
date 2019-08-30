@@ -1,0 +1,21 @@
+---
+- name: Create pecl extension files (fpm)
+  file:
+    path: "/etc/php/7.3/fpm/conf.d/40-{{ item }}.ini"
+    state: touch
+  with_items: "{{ pecl_extensions_fpm }}"
+
+- name: Add pecl extensions (fpm)
+  lineinfile:
+    path: "/etc/php/7.3/fpm/conf.d/40-{{ item }}.ini"
+    regexp: '^extension=/usr/lib/php/20180731/{{ item }}'
+    line: 'extension=/usr/lib/php/20180731/{{ item }}.so'
+  with_items: "{{ pecl_extensions_fpm }}"
+  notify: restart php
+
+- name: Remove pecl extension files (fpm)
+  file:
+    path: "/etc/php/7.3/fpm/conf.d/40-{{ item }}.ini"
+    state: absent
+  with_items: "{{ remove_pecl_extensions_fpm }}"
+  notify: restart php

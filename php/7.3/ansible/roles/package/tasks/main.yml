@@ -1,0 +1,56 @@
+---
+- name: Add apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items: "{{ apt_keys }}"
+
+- name: Remove apt keys
+  apt_key:
+    url: "{{ item }}"
+    state: absent
+  with_items: "{{ remove_apt_keys }}"
+
+- name: Add repositories
+  apt_repository:
+    repo: "{{ item.repo }}"
+    filename: "{{ item.filename | default('ansible') }}"
+    codename: "{{ item.codename | default() }}"
+    state: present
+  with_items: "{{ apt_repositories }}"
+
+- name: Remove repositories
+  apt_repository:
+    repo: "{{ item.repo }}"
+    filename: "{{ item.filename | default('ansible') }}"
+    state: absent
+  with_items: "{{ remove_apt_repositories }}"
+
+- name: Upgrade System
+  apt:
+    update_cache: yes
+    upgrade: "{{ upgrade_system }}"
+  when: upgrade_system != 'no'
+
+- name: Install core packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ core_packages }}"
+  register: "{{ core_packages_register | default('core_packages_register') }}"
+
+- name: Install additional packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages }}"
+  register: "{{ packages_register | default('packages_register') }}"
+
+- name: Install additional packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ remove_packages }}"
+  register: "{{ packages_removed_register | default('packages_removed_register') }}"
