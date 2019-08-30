@@ -1,0 +1,58 @@
+server {
+    listen 80;
+
+    root /srv/glue/www;
+    index index.php;
+
+    server_name glue.col.suite.local;
+
+    access_log /var/log/nginx/de-glue-access.log;
+    error_log /var/log/nginx/de-glue-error.log;
+
+    set $application_env development;
+    set $application_store COL;
+
+    location / {
+        if (-f $document_root/maintenance.html) {
+            return 503;
+        }
+
+
+	add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Headers *;
+        add_header Access-Control-Allow-Methods *;
+
+        # Frontend - force browser to use new rendering engine
+        #more_set_headers "X-UA-Compatible: IE=Edge,chrome=1";
+
+        # Terminate OPTIONS requests immediately. No need for calling php
+        # OPTIONS is used by Ajax from http to https as a pre-flight-request
+        # see http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+        if ($request_method = OPTIONS) {
+            return 200;
+        }
+
+        add_header X-Server $hostname;
+
+        try_files $uri @rewriteapp;
+
+        #more_clear_headers 'X-Powered-By' 'X-Store' 'X-Locale' 'X-Env' 'Server';
+    }
+
+    location @rewriteapp {
+        # rewrite all to app.php
+        rewrite ^(.*)$ /index.php last;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param APPLICATION_ENV $application_env;
+        fastcgi_param APPLICATION_STORE $application_store;
+    }
+}
