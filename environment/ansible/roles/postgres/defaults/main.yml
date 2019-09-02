@@ -1,0 +1,25 @@
+---
+
+postgres_install_client: true
+postgres_install_server: true
+postgres_remote_access: true
+
+# -
+#   name: username
+#   password: password
+#   db: db
+#   priv: ALL
+#   flags: CREATEDB,NOSUPERUSER
+postgres_users: []
+
+# - dbname
+postgres_dbs: []
+
+# -
+#   see properties: https://docs.ansible.com/ansible/2.6/modules/postgresql_privs_module.html
+postgres_privs: []
+
+remote_ip_whitelist:
+  - "0.0.0.0/0"
+
+remove_remote_ip_whitelist: []

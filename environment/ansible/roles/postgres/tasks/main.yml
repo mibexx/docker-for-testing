@@ -1,0 +1,44 @@
+---
+- name: Install postgres
+  include_tasks: install.yml
+  when: postgres_install_server or postgres_install_client
+
+- name: Remote availability
+  include_tasks: remote_access.yml
+  when: postgres_install_server and postgres_remote_access
+
+- name: postgres is running
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+  tags:
+    - service
+  when: postgres_install_server
+
+- name: Create databases
+  postgresql_db:
+    name: "{{ item }}"
+  with_items: "{{ postgres_dbs }}"
+  become_user: postgres
+  when: postgres_install_server
+  notify: restart postgres
+
+- name: Create user
+  postgresql_user:
+    db: "{{ item.db | default('') }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    role_attr_flags: "{{ item.flags | default('') }}"
+    state: present
+  with_items: "{{ postgres_users }}"
+  become_user: postgres
+  when: postgres_install_server
+  notify: restart postgres
+
+- name: Define privileges
+  postgresql_privs: "{{ item }}"
+  with_items: "{{ postgres_privs }}"
+  become_user: postgres
+  when: postgres_install_server
+  notify: restart postgres

@@ -1,0 +1,57 @@
+---
+
+- hosts: server
+  become: yes
+  tasks:
+    - name: "php-fpm is running"
+      shell: service php7.3-fpm start
+    - name: "RabbitMQ is running"
+      service:
+        name: rabbitmq-server
+        state: started
+    - name: "Postgres is running"
+      service:
+        name: postgresql
+        state: started
+    - name: "Nginx is running"
+      service:
+        name: nginx
+        state: started
+    - name: "Elasticsearch is running"
+      service:
+        name: elasticsearch
+        state: started
+    - name: "Redis is running"
+      service:
+        name: redis-server
+        state: started
+    - name: "Wait for rabbitmq"
+      wait_for:
+        host: "127.0.0.1"
+        port: 15672
+        delay: 3
+        timeout: 300
+    - name: "Wait for elasticsearch"
+      wait_for:
+        host: "127.0.0.1"
+        port: 9200
+        delay: 1
+        timeout: 300
+    - name: "Wait for nginx"
+      wait_for:
+        host: "127.0.0.1"
+        port: 80
+        delay: 1
+        timeout: 300
+    - name: "Wait for redis"
+      wait_for:
+        host: "127.0.0.1"
+        port: 6379
+        delay: 1
+        timeout: 300
+    - name: "Wait for postgres"
+      wait_for:
+        host: "127.0.0.1"
+        port: 5432
+        delay: 1
+        timeout: 300

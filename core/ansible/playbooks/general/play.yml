@@ -6,6 +6,8 @@
       - vim
       - curl
       - git
+      - netcat-openbsd
+      - sudo
   tasks:
     - name: Install basics
       apt:

@@ -1,0 +1,24 @@
+---
+- name: Make postgres remote available
+  lineinfile:
+    path: /etc/postgresql/9.6/main/postgresql.conf
+    regexp: '^listen_addresses ='
+    line: "listen_addresses = '*'"
+  notify: restart postgres
+
+- name: Add ips to whitelist
+  lineinfile:
+    path: /etc/postgresql/9.6/main/pg_hba.conf
+    regexp: '^host(.*)all(.*)all(.*){{ item }}'
+    line: 'host all all {{ item }} md5'
+    state: present
+  with_items: "{{ remote_ip_whitelist }}"
+  notify: restart postgres
+
+- name: Remove ips from whitelist
+  lineinfile:
+    path: /etc/postgresql/9.6/main/pg_hba.conf
+    regexp: '^host(.*)all(.*)all(.*){{ item }}'
+    state: absent
+  with_items: "{{ remove_remote_ip_whitelist }}"
+  notify: restart postgres

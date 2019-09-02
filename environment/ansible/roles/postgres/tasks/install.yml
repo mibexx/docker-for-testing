@@ -1,0 +1,26 @@
+---
+- name: Prepare postgres
+  include_role:
+    name: package
+  vars:
+    core_packages: []
+    apt_keys:
+      - https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    apt_repositories:
+      -
+        repo: deb https://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
+        filename: postgres
+
+- name: Install postgres client
+  apt:
+    name: postgresql-client-9.6
+    state: present
+    update_cache: yes
+  when: postgres_install_client
+
+- name: Install postgres server
+  apt:
+    name: postgresql-9.6,postgresql-contrib-9.6,python-psycopg2,libpq-dev
+    state: present
+    update_cache: yes
+  when: postgres_install_server

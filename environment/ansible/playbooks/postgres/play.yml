@@ -2,9 +2,9 @@
 - hosts: server
   become: yes
   vars:
-    postgresql_users:
+    postgres_users:
       - name: docker
         password: docker
-        priv: ALL
+        flags: CREATEDB,SUPERUSER,LOGIN
   roles:
-    - geerlingguy.postgresql
+    - role: postgres
