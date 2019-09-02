@@ -18,3 +18,25 @@ There are multiply images based on each other:
 2. :environment
 3. :php-73
 3. :testing
+
+
+## Usage
+
+To use this environment copy the content from the directory "_copy_to_project" into the root directory of your project.  
+Then you can build your testing environment:
+
+```
+docker build -t localtesting .
+```
+
+You can run the testing once or with a permanent ssh connection.  
+
+***Once***:
+```
+docker run --rm --name testonce -v ./testinglogs:/data/docker/logs localtesting
+```  
+
+***With ssh***:
+```
+docker run --name testonce -d -p 2222:22 localtesting
+```
