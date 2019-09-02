@@ -29,14 +29,8 @@ Then you can build your testing environment:
 docker build -t localtesting .
 ```
 
-You can run the testing once or with a permanent ssh connection.  
-
+To start the contaienr run
 ***Once***:
 ```
-docker run --rm --name testonce -v ./testinglogs:/data/docker/logs localtesting
+docker run --name localtest -p 2222:22 -v $(pwd):/data/docker/testing -v $(pwd)/testinglogs:/data/docker/logs localtesting
 ```  
-
-***With ssh***:
-```
-docker run --name testonce -d -p 2222:22 localtesting
-```

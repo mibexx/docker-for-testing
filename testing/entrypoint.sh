@@ -7,7 +7,7 @@ echo "Create database"
 sudo -u postgres createdb docker
 
 # Run your tests
-echo "Start testing log into: $LOG_DIR"
-[ -f $TESTING_BIN ] && bash $TESTING_BIN > $LOG_DIR/testing.log
+[ -f $TESTING_BIN ] && echo "Start testing log into: $LOG_DIR" && bash $TESTING_BIN > $LOG_DIR/testing.log
 
+echo "Done.. starting ssh-server.."
 exec "$@"
