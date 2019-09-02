@@ -17,3 +17,4 @@ There are multiply images based on each other:
 1. :core
 2. :environment
 3. :php-73
+3. :testing
